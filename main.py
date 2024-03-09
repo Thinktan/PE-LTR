@@ -10,8 +10,12 @@ Created on Wed Oct  9 11:27:53 2019
 @author: jackielinxiao
 """
 
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
+
+
+tf.compat.v1.disable_eager_execution()
 
 x_data = np.float32(np.random.rand(2, 100)) 
 y_data = np.dot([0.100, 0.200], x_data) + 0.300
@@ -66,12 +70,12 @@ def pareto_step(weights_list, out_gradients_list):
 
 w_a = 0.5
 w_b = 0.5
-for step in xrange(0, 50):
+for step in range(0, 50):
     res = sess.run([a_gradients,b_gradients,train],feed_dict={weight_a:w_a,weight_b:w_b})
     #res[0]
     weights = np.mat([w_a, w_b])
     paras = np.vstack((res[0][0],res[1][0]))
     mid = pareto_step(weights,paras)
     w_a, w_b = mid[0,0], mid[0,1]
-    print w_a, w_b, step, sess.run(W), sess.run(b)
+    print(w_a, w_b, step, sess.run(W), sess.run(b))
     #print alpha, 1.0-alpha
